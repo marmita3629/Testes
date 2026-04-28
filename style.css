@@ -6,13 +6,12 @@
 
 .teste_quadrado{
   background-color: #424e61;
-  width: 1000;
-  padding: 20dpx;
+  width: 10000;
 }
 
 .teste_texto {
  padding: 50px;
  text-align: center;
-  width: 50%;
+width: 50%;
  font-size: 30px;
 }
