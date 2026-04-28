@@ -3,16 +3,3 @@
   padding: 0;
   box-sizing: border-box;
 }
-
-.teste_quadrado{
-    background-color: #f8fafd;
-    height: 100%;
-    min-height: 0;
-}
-
-.teste_texto {
- padding: 50px;
- text-align: center;
- width: 50%;
- font-size: 30px;
-}
