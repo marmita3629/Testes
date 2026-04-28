@@ -4,6 +4,13 @@
   box-sizing: border-box;
 }
 
+header {
+  background-color: #424e61;
+  color: white;
+  width: 100%;
+  padding: 20px;
+}
+
 .cabecalho-itens {
  display: flex;
  align-items: center;
