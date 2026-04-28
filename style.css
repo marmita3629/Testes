@@ -10,3 +10,10 @@ header {
   width: 100%;
   padding: 20dpx;
 }
+
+.teste_texto {
+ padding: 50px;
+ text-align: center;
+  width: 50%;
+ font-size: 30px;
+}
