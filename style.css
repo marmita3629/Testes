@@ -3,3 +3,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+.cabecalho-itens {
+ display: flex;
+ align-items: center;
+ justify-content: space-between; 
+}
+
+.titulo_site {
+ padding: 50px;
+ text-align: center;
+ width: 50%;
+ font-size: 30px;
+ color:rgb(86, 38, 131)
+}
