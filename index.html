@@ -1,22 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Sidebar</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coremotion - Esportes</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="Barra">
-    <h1>blablabla</h1>
-  
 
+    <div class="app-container">
+        <nav class="sidebar" id="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">C</div>
+                <span class="logo-text">COREMOTION</span>
+            </div>
 
-  </div>
+            <ul class="nav-links">
+                <li onclick="showSection('inicio')"><i class="icon-home"></i> <span>INÍCIO</span></li>
+                <li onclick="showSection('midia')"><i class="icon-media"></i> <span>MÍDIA</span></li>
+                <li onclick="showSection('amistosos')"><i class="icon-calendar"></i> <span>AMISTOSOS</span></li>
+                <li onclick="showSection('market')"><i class="icon-shop"></i> <span>MARKET</span></li>
+            </ul>
 
+            <div class="profile-section" onclick="showSection('login')">
+                <div class="profile-btn">
+                    <i class="icon-user"></i> <span>PERFIL</span>
+                </div>
+            </div>
+        </nav>
 
+        <main class="content-area">
+            
+            <section id="inicio" class="content-section active">
+                <h1>Notícias Esportivas</h1>
+                <div class="card">Mudanças de regras e contratações...</div>
+            </section>
 
+            <section id="midia" class="content-section">
+                <h1>Mídia da Comunidade</h1>
+                <p>Poste fotos de arenas e jogos.</p>
+            </section>
 
+            <section id="amistosos" class="content-section">
+                <h1>Campeonatos Amistosos</h1>
+                <button>Inscrever meu Time</button>
+            </section>
 
+            <section id="market" class="content-section">
+                <h1>Marketplace</h1>
+                <p>Chuteiras, joelheiras e equipamentos.</p>
+            </section>
 
+            <section id="login" class="content-section">
+                <div class="auth-container">
+                    <div class="profile-placeholder"></div>
+                    <div class="info-grid">
+                        <input type="text" placeholder="Nome">
+                        <input type="number" placeholder="Idade">
+                        <input type="text" placeholder="Altura">
+                        <input type="text" placeholder="Peso">
+                        <input type="email" placeholder="E-mail">
+                        <input type="tel" placeholder="Telefone">
+                    </div>
+                    <button class="btn-red">Editar Informações</button>
+                    <p onclick="alert('Abrir Modal Login/Cadastro')">Não tem conta? <span>Registre-se</span></p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
