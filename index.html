@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coremotion - Esportes</title>
+    <title>Coremotion - Plataforma Esportiva</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -17,15 +17,23 @@
             </div>
 
             <ul class="nav-links">
-                <li onclick="showSection('inicio')"><i class="icon-home"></i> <span>INÍCIO</span></li>
-                <li onclick="showSection('midia')"><i class="icon-media"></i> <span>MÍDIA</span></li>
-                <li onclick="showSection('amistosos')"><i class="icon-calendar"></i> <span>AMISTOSOS</span></li>
-                <li onclick="showSection('market')"><i class="icon-shop"></i> <span>MARKET</span></li>
+                <li onclick="showSection('inicio', this)" class="active-link">
+                    <i class="fa-solid fa-house"></i> <span>INÍCIO</span>
+                </li>
+                <li onclick="showSection('midia', this)">
+                    <i class="fa-solid fa-image"></i> <span>MÍDIA</span>
+                </li>
+                <li onclick="showSection('amistosos', this)">
+                    <i class="fa-solid fa-calendar-days"></i> <span>AMISTOSOS</span>
+                </li>
+                <li onclick="showSection('market', this)">
+                    <i class="fa-solid fa-bag-shopping"></i> <span>MARKET</span>
+                </li>
             </ul>
 
-            <div class="profile-section" onclick="showSection('login')">
-                <div class="profile-btn">
-                    <i class="icon-user"></i> <span>PERFIL</span>
+            <div class="profile-area">
+                <div class="profile-btn" onclick="showSection('perfil', this)">
+                    <i class="fa-solid fa-user-circle"></i> <span>PERFIL</span>
                 </div>
             </div>
         </nav>
@@ -33,38 +41,67 @@
         <main class="content-area">
             
             <section id="inicio" class="content-section active">
-                <h1>Notícias Esportivas</h1>
-                <div class="card">Mudanças de regras e contratações...</div>
+                <h1 class="section-title">Início</h1>
+                <div class="news-container">
+                    <div class="card">
+                        <h3>Novas Regras de Transferência</h3>
+                        <p>Confira as atualizações para a próxima temporada de amistosos.</p>
+                    </div>
+                </div>
             </section>
 
             <section id="midia" class="content-section">
-                <h1>Mídia da Comunidade</h1>
-                <p>Poste fotos de arenas e jogos.</p>
+                <h1 class="section-title">Mídia</h1>
+                <p>Compartilhe suas fotos em arenas e ginásios.</p>
+                <div class="media-placeholder">Galeria de Fotos em breve...</div>
             </section>
 
             <section id="amistosos" class="content-section">
-                <h1>Campeonatos Amistosos</h1>
-                <button>Inscrever meu Time</button>
+                <h1 class="section-title">Amistosos</h1>
+                <button class="btn-action">Inscrever meu Time</button>
             </section>
 
             <section id="market" class="content-section">
-                <h1>Marketplace</h1>
-                <p>Chuteiras, joelheiras e equipamentos.</p>
+                <h1 class="section-title">Market</h1>
+                <p>Equipamentos, chuteiras e acessórios esportivos.</p>
             </section>
 
-            <section id="login" class="content-section">
-                <div class="auth-container">
-                    <div class="profile-placeholder"></div>
-                    <div class="info-grid">
-                        <input type="text" placeholder="Nome">
-                        <input type="number" placeholder="Idade">
-                        <input type="text" placeholder="Altura">
-                        <input type="text" placeholder="Peso">
-                        <input type="email" placeholder="E-mail">
-                        <input type="tel" placeholder="Telefone">
+            <section id="perfil" class="content-section">
+                <div class="auth-card">
+                    <div class="profile-avatar">
+                        <i class="fa-solid fa-user"></i>
                     </div>
-                    <button class="btn-red">Editar Informações</button>
-                    <p onclick="alert('Abrir Modal Login/Cadastro')">Não tem conta? <span>Registre-se</span></p>
+                    <h2 class="auth-title">Comece agora sua história!</h2>
+                    
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Nome completo</label>
+                            <input type="text" placeholder="digite aqui...">
+                        </div>
+                        <div class="input-group">
+                            <label>Nº de telefone</label>
+                            <input type="tel" placeholder="digite aqui...">
+                        </div>
+                        <div class="input-group">
+                            <label>Altura (cm)</label>
+                            <input type="number" placeholder="ex: 180">
+                        </div>
+                        <div class="input-group">
+                            <label>Peso (kg)</label>
+                            <input type="number" placeholder="ex: 75">
+                        </div>
+                        <div class="input-group">
+                            <label>E-mail</label>
+                            <input type="email" placeholder="digite aqui...">
+                        </div>
+                        <div class="input-group">
+                            <label>Senha</label>
+                            <input type="password" placeholder="digite aqui...">
+                        </div>
+                    </div>
+
+                    <button class="btn-submit">Cadastre-se</button>
+                    <p class="auth-footer">Já tem conta? <a href="#">Vá para o Login</a></p>
                 </div>
             </section>
 
