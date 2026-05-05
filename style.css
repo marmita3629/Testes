@@ -460,3 +460,30 @@ h2 {
     cursor: pointer;
     margin-top: 20px;
 }
+
+/* Garante que o texto digitado seja visível e preto nos inputs brancos */
+.input-group input {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: none;
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 14px;
+}
+
+/* Ajuste para o botão Salvar ficar no estilo do seu site */
+.btn-submit {
+    background: linear-gradient(to right, #d90404, #ff4d4d);
+    color: white;
+    padding: 12px 60px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    transform: scale(1.05);
+}

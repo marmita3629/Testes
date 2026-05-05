@@ -1,5 +1,5 @@
 /**
- * Alterna entre as seções do site e atualiza o estado visual do menu
+ * Alterna entre as seções do site
  */
 function showSection(sectionId, element) {
     const sections = document.querySelectorAll('.content-section');
@@ -18,69 +18,87 @@ function showSection(sectionId, element) {
     }
 }
 
-// --- NOVAS FUNÇÕES PARA LOGIN E PERSISTÊNCIA ---
+// --- FUNÇÕES DE PERSISTÊNCIA ---
 
 /**
- * Salva os dados do cadastro e simula o login
+ * Salva as informações dos inputs no localStorage
  */
-function efetuarCadastroELogin() {
-    // Captura os valores dos inputs
+function salvarDadosPerfil() {
+    // Capturamos os inputs da seção de perfil
+    const inputs = document.querySelectorAll('#perfil input');
+    
     const dados = {
-        nome: document.querySelector('input[placeholder="digite aqui..."]').value,
-        telefone: document.querySelector('input[type="tel"]').value,
-        altura: document.querySelector('input[placeholder="ex: 180"]').value,
-        peso: document.querySelector('input[placeholder="ex: 75"]').value,
-        email: document.querySelector('input[type="email"]').value,
+        nome: inputs[0].value,
+        telefone: inputs[1].value,
+        altura: inputs[2].value,
+        peso: inputs[3].value,
+        email: inputs[4].value,
+        senha: inputs[5].value
     };
 
-    // Salva no localStorage (para persistir ao recarregar a página)
-    localStorage.setItem('usuarioLogado', 'true');
     localStorage.setItem('dadosUsuario', JSON.stringify(dados));
-
-    // Volta para a tela inicial
-    alert("Login realizado com sucesso!");
-    window.location.reload(); // Recarrega para aplicar as mudanças de UI
+    alert("Informações salvas com sucesso!");
 }
 
 /**
- * Limpa os dados e volta para a tela de login
+ * Desloga o usuário e limpa o estado
  */
 function sair() {
     localStorage.removeItem('usuarioLogado');
-    // Se quiser apagar os dados permanentemente, use: localStorage.removeItem('dadosUsuario');
+    // Redireciona para o login
     window.location.href = "login.html";
 }
 
 /**
- * Verifica o estado do login e preenche os campos
+ * Organiza a interface dependendo se o usuário está logado
  */
 function verificarEstadoLogin() {
     const logado = localStorage.getItem('usuarioLogado') === 'true';
     const dadosSalvos = JSON.parse(localStorage.getItem('dadosUsuario'));
-    const btnSubmit = document.querySelector('.btn-submit');
+    
+    const containerBotoes = document.querySelector('#perfil .auth-card');
     const authTitle = document.querySelector('.auth-title');
 
-    if (logado && dadosSalvos) {
-        // 1. Muda o texto e função do botão
-        btnSubmit.textContent = "Sair";
-        btnSubmit.style.background = "linear-gradient(to right, #555, #222)"; // Cor de sair
-        btnSubmit.onclick = sair;
+    // Se houver dados salvos, preenchemos os campos idependente de estar logado ou não
+    if (dadosSalvos) {
+        const inputs = document.querySelectorAll('#perfil input');
+        inputs[0].value = dadosSalvos.nome || "";
+        inputs[1].value = dadosSalvos.telefone || "";
+        inputs[2].value = dadosSalvos.altura || "";
+        inputs[3].value = dadosSalvos.peso || "";
+        inputs[4].value = dadosSalvos.email || "";
+        inputs[5].value = dadosSalvos.senha || "";
+    }
 
-        // 2. Preenche os campos com os dados salvos
-        document.querySelector('input[placeholder="digite aqui..."]').value = dadosSalvos.nome;
-        document.querySelector('input[type="tel"]').value = dadosSalvos.telefone;
-        document.querySelector('input[placeholder="ex: 180"]').value = dadosSalvos.altura;
-        document.querySelector('input[placeholder="ex: 75"]').value = dadosSalvos.peso;
-        document.querySelector('input[type="email"]').value = dadosSalvos.email;
-        
+    if (logado) {
         authTitle.textContent = "Bem-vindo de volta!";
-    } else {
-        // Se não estiver logado, o botão faz a função de cadastro/login
-        btnSubmit.onclick = efetuarCadastroELogin;
+        
+        // Removemos o link antigo de "Já tem conta?" e o botão antigo se existirem
+        const footerAntigo = document.querySelector('.auth-footer');
+        if (footerAntigo) footerAntigo.remove();
+        const btnSubmitAntigo = document.querySelector('.btn-submit');
+        if (btnSubmitAntigo) btnSubmitAntigo.remove();
+
+        // Criamos o novo botão SALVAR (Vermelho)
+        const btnSalvar = document.createElement('button');
+        btnSalvar.className = 'btn-submit';
+        btnSalvar.textContent = 'Salvar';
+        btnSalvar.style.marginTop = '20px';
+        btnSalvar.onclick = salvarDadosPerfil;
+
+        // Criamos o novo botão SAIR (Menor e embaixo)
+        const btnSair = document.createElement('p');
+        btnSair.innerHTML = `<span style="cursor:pointer; color:#888; text-decoration:underline; font-size:14px;">Sair da conta</span>`;
+        btnSair.style.marginTop = '15px';
+        btnSair.onclick = sair;
+
+        // Adicionamos ao card
+        const card = document.querySelector('.auth-card');
+        card.appendChild(btnSalvar);
+        card.appendChild(btnSair);
     }
 }
 
-// Configuração inicial
 window.addEventListener('DOMContentLoaded', () => {
     const startItem = document.querySelector('.nav-links li');
     showSection('inicio', startItem);
