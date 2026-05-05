@@ -38,10 +38,13 @@
             const nomeDigitado = document.getElementById('nome').value;
             const senhaDigitada = document.getElementById('senha').value;
 
+            // Substitua o trecho dentro do seu login.html por este:
             if (nomeDigitado === 'admin' && senhaDigitada === '12345678!') {
-                alert('Login efetuado com sucesso!');
+                localStorage.setItem('usuarioLogado', 'true'); // Define como logado
+                alert('Login efetuado com sucesso! Bem-vindo, Admin.');
+                window.location.href = "index.html"; // Redireciona para a página principal
             } else {
-                alert('Dados incorretos.');
+                mensagemErro.style.display = 'block';
             }
         });
     </script>
