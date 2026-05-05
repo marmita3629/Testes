@@ -18,13 +18,10 @@ function showSection(sectionId, element) {
     }
 }
 
-// --- FUNÇÕES DE PERSISTÊNCIA ---
-
 /**
- * Salva as informações dos inputs no localStorage
+ * Salva as informações especificamente para o login do admin
  */
 function salvarDadosPerfil() {
-    // Capturamos os inputs da seção de perfil
     const inputs = document.querySelectorAll('#perfil input');
     
     const dados = {
@@ -36,87 +33,74 @@ function salvarDadosPerfil() {
         senha: inputs[5].value
     };
 
-    localStorage.setItem('dadosUsuario', JSON.stringify(dados));
-    alert("Informações salvas com sucesso!");
+    // Salva no banco local
+    localStorage.setItem('dadosAdmin', JSON.stringify(dados));
+    alert("Dados do Admin salvos com sucesso!");
 }
 
 /**
- * Desloga o usuário e limpa o estado
+ * Sai da conta e limpa os estados
  */
-function sair() {
-    localStorage.removeItem('usuarioLogado');
-    // Redireciona para o login
-    window.location.href = "login.html";
-}
-
-/**
- * Organiza a interface dependendo se o usuário está logado
- */
-/**
- * Organiza a interface dependendo se o usuário está logado
- */
-function verificarEstadoLogin() {
-    const logado = localStorage.getItem('usuarioLogado') === 'true';
-    const convidado = localStorage.getItem('modoConvidado') === 'true';
-    const dadosSalvos = JSON.parse(localStorage.getItem('dadosUsuario'));
-    
-    const authTitle = document.querySelector('.auth-title');
-
-    // REGRA 1: Se for convidado, NÃO FAZ NADA. 
-    // Mantém o título original, campos vazios e botão de cadastro.
-    if (convidado) {
-        console.log("Modo convidado ativo: Perfil mantido original.");
-        return; 
-    }
-
-    // REGRA 2: Se NÃO for convidado e houver dados, preenche os campos
-    if (dadosSalvos) {
-        const inputs = document.querySelectorAll('#perfil input');
-        if(inputs.length > 0) {
-            inputs[0].value = dadosSalvos.nome || "";
-            inputs[1].value = dadosSalvos.telefone || "";
-            inputs[2].value = dadosSalvos.altura || "";
-            inputs[3].value = dadosSalvos.peso || "";
-            inputs[4].value = dadosSalvos.email || "";
-            inputs[5].value = dadosSalvos.senha || "";
-        }
-    }
-
-    // REGRA 3: Se estiver logado (e não for convidado), muda os botões para "Salvar/Sair"
-    if (logado && !convidado) {
-        authTitle.textContent = "Bem-vindo de volta!";
-        
-        const footerAntigo = document.querySelector('.auth-footer');
-        if (footerAntigo) footerAntigo.remove();
-        
-        const btnSubmitAntigo = document.querySelector('.btn-submit');
-        if (btnSubmitAntigo) {
-            btnSubmitAntigo.textContent = 'Salvar';
-            btnSubmitAntigo.onclick = salvarDadosPerfil;
-        }
-
-        // Adiciona o botão Sair pequeno embaixo
-        const card = document.querySelector('.auth-card');
-        const existeSair = document.getElementById('btn-sair-link');
-        
-        if (!existeSair) {
-            const btnSair = document.createElement('p');
-            btnSair.id = 'btn-sair-link';
-            btnSair.innerHTML = `<span style="cursor:pointer; color:#888; text-decoration:underline; font-size:14px;">Sair da conta</span>`;
-            btnSair.style.marginTop = '15px';
-            btnSair.onclick = sair;
-            card.appendChild(btnSair);
-        }
-    }
-}
-
-// Atualize também a função sair para limpar o modo convidado
 function sair() {
     localStorage.removeItem('usuarioLogado');
     localStorage.removeItem('modoConvidado');
     window.location.href = "login.html";
 }
 
+/**
+ * Verifica o login e ajusta a interface
+ */
+function verificarEstadoLogin() {
+    const logado = localStorage.getItem('usuarioLogado') === 'true';
+    const convidado = localStorage.getItem('modoConvidado') === 'true';
+    const authTitle = document.querySelector('.auth-title');
+    const card = document.querySelector('.auth-card');
+    
+    // 1. Se for CONVIDADO, não preenche nada e encerra aqui
+    if (convidado) {
+        console.log("Acesso como convidado: Perfil limpo.");
+        return; 
+    }
+
+    // 2. Se estiver LOGADO como ADMIN (Não convidado)
+    if (logado && !convidado) {
+        authTitle.textContent = "Bem-vindo de volta, Admin!";
+
+        // Preenche os campos com o que foi salvo anteriormente para o admin
+        const dadosSalvos = JSON.parse(localStorage.getItem('dadosAdmin'));
+        const inputs = document.querySelectorAll('#perfil input');
+        
+        if (dadosSalvos && inputs.length > 0) {
+            inputs[0].value = dadosSalvos.nome || "";
+            inputs[1].value = dadosSalvos.telefone || "";
+            inputs[2].value = dadosSalvos.altura || "";
+            inputs[3].value = dadosSalvos.peso || "";
+            inputs[4].value = dadosSalvos.email || "admin"; // Valor padrão
+            inputs[5].value = dadosSalvos.senha || "12345678!"; // Valor padrão
+        }
+
+        // Ajusta os botões (Remove o rodapé de login e muda o botão principal)
+        const footer = document.querySelector('.auth-footer');
+        if (footer) footer.style.display = 'none';
+
+        const btnPrincipal = document.querySelector('.btn-submit');
+        if (btnPrincipal) {
+            btnPrincipal.textContent = "Salvar Alterações";
+            btnPrincipal.onclick = salvarDadosPerfil;
+            btnPrincipal.type = "button";
+        }
+
+        // Adiciona o botão Sair discreto se não existir
+        if (!document.getElementById('logout-link')) {
+            const logoutArea = document.createElement('p');
+            logoutArea.id = 'logout-link';
+            logoutArea.innerHTML = `<span onclick="sair()" style="cursor:pointer; color:#888; text-decoration:underline; font-size:14px; display:block; margin-top:20px;">Sair da conta</span>`;
+            card.appendChild(logoutArea);
+        }
+    }
+}
+
+// Inicialização
 window.addEventListener('DOMContentLoaded', () => {
     const startItem = document.querySelector('.nav-links li');
     showSection('inicio', startItem);

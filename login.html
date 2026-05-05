@@ -36,31 +36,27 @@
     </div>
 
     <script>
-        // Função para o login normal
-        document.getElementById('formLogin').addEventListener('submit', function(event) {
-            event.preventDefault(); 
-            const nomeDigitado = document.getElementById('nome').value;
-            const senhaDigitada = document.getElementById('senha').value;
+document.getElementById('formLogin').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+    const nomeDigitado = document.getElementById('nome').value;
+    const senhaDigitada = document.getElementById('senha').value;
 
-            if (nomeDigitado === 'admin' && senhaDigitada === '12345678!') {
-                localStorage.setItem('usuarioLogado', 'true');
-                localStorage.setItem('tipoUsuario', 'admin');
-                window.location.href = "index.html";
-            } else {
-                alert('Dados incorretos.');
-            }
-        });
+    if (nomeDigitado === 'admin' && senhaDigitada === '12345678!') {
+        // Define como logado e GARANTE que NÃO é modo convidado
+        localStorage.setItem('usuarioLogado', 'true');
+        localStorage.setItem('modoConvidado', 'false'); 
+        
+        alert('Login efetuado com sucesso! Bem-vindo, Admin.');
+        window.location.href = "index.html"; 
+    } else {
+        alert('Nome de usuário ou senha incorretos!');
+    }
+});
 
-        // Função para entrar como convidado
-        function entrarComoConvidado() {
-    // Definimos que entrou, mas marcamos como convidado
-          localStorage.setItem('usuarioLogado', 'true');
-          localStorage.setItem('modoConvidado', 'true'); 
-    
-          // Removemos qualquer dado de usuário anterior para garantir que o perfil venha limpo
-          localStorage.removeItem('dadosUsuario');
-    
-          window.location.href = "index.html";
+function entrarComoConvidado() {
+    localStorage.setItem('usuarioLogado', 'true');
+    localStorage.setItem('modoConvidado', 'true'); 
+    window.location.href = "index.html";
 }
     </script>
 </body>
