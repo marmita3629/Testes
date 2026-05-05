@@ -53,18 +53,15 @@
 
         // Função para entrar como convidado
         function entrarComoConvidado() {
-            localStorage.setItem('usuarioLogado', 'true');
-            localStorage.setItem('tipoUsuario', 'convidado');
-            // Criamos dados vazios para não dar erro no script do perfil
-            localStorage.setItem('dadosUsuario', JSON.stringify({
-                nome: "Convidado",
-                telefone: "",
-                altura: "",
-                peso: "",
-                email: "visitante@coremotion.com"
-            }));
-            window.location.href = "index.html";
-        }
+    // Definimos que entrou, mas marcamos como convidado
+          localStorage.setItem('usuarioLogado', 'true');
+          localStorage.setItem('modoConvidado', 'true'); 
+    
+          // Removemos qualquer dado de usuário anterior para garantir que o perfil venha limpo
+          localStorage.removeItem('dadosUsuario');
+    
+          window.location.href = "index.html";
+}
     </script>
 </body>
 </html>

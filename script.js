@@ -52,51 +52,69 @@ function sair() {
 /**
  * Organiza a interface dependendo se o usuário está logado
  */
+/**
+ * Organiza a interface dependendo se o usuário está logado
+ */
 function verificarEstadoLogin() {
     const logado = localStorage.getItem('usuarioLogado') === 'true';
+    const convidado = localStorage.getItem('modoConvidado') === 'true';
     const dadosSalvos = JSON.parse(localStorage.getItem('dadosUsuario'));
     
-    const containerBotoes = document.querySelector('#perfil .auth-card');
     const authTitle = document.querySelector('.auth-title');
 
-    // Se houver dados salvos, preenchemos os campos idependente de estar logado ou não
+    // REGRA 1: Se for convidado, NÃO FAZ NADA. 
+    // Mantém o título original, campos vazios e botão de cadastro.
+    if (convidado) {
+        console.log("Modo convidado ativo: Perfil mantido original.");
+        return; 
+    }
+
+    // REGRA 2: Se NÃO for convidado e houver dados, preenche os campos
     if (dadosSalvos) {
         const inputs = document.querySelectorAll('#perfil input');
-        inputs[0].value = dadosSalvos.nome || "";
-        inputs[1].value = dadosSalvos.telefone || "";
-        inputs[2].value = dadosSalvos.altura || "";
-        inputs[3].value = dadosSalvos.peso || "";
-        inputs[4].value = dadosSalvos.email || "";
-        inputs[5].value = dadosSalvos.senha || "";
+        if(inputs.length > 0) {
+            inputs[0].value = dadosSalvos.nome || "";
+            inputs[1].value = dadosSalvos.telefone || "";
+            inputs[2].value = dadosSalvos.altura || "";
+            inputs[3].value = dadosSalvos.peso || "";
+            inputs[4].value = dadosSalvos.email || "";
+            inputs[5].value = dadosSalvos.senha || "";
+        }
     }
 
-    if (logado) {
+    // REGRA 3: Se estiver logado (e não for convidado), muda os botões para "Salvar/Sair"
+    if (logado && !convidado) {
         authTitle.textContent = "Bem-vindo de volta!";
         
-        // Removemos o link antigo de "Já tem conta?" e o botão antigo se existirem
         const footerAntigo = document.querySelector('.auth-footer');
         if (footerAntigo) footerAntigo.remove();
+        
         const btnSubmitAntigo = document.querySelector('.btn-submit');
-        if (btnSubmitAntigo) btnSubmitAntigo.remove();
+        if (btnSubmitAntigo) {
+            btnSubmitAntigo.textContent = 'Salvar';
+            btnSubmitAntigo.onclick = salvarDadosPerfil;
+        }
 
-        // Criamos o novo botão SALVAR (Vermelho)
-        const btnSalvar = document.createElement('button');
-        btnSalvar.className = 'btn-submit';
-        btnSalvar.textContent = 'Salvar';
-        btnSalvar.style.marginTop = '20px';
-        btnSalvar.onclick = salvarDadosPerfil;
-
-        // Criamos o novo botão SAIR (Menor e embaixo)
-        const btnSair = document.createElement('p');
-        btnSair.innerHTML = `<span style="cursor:pointer; color:#888; text-decoration:underline; font-size:14px;">Sair da conta</span>`;
-        btnSair.style.marginTop = '15px';
-        btnSair.onclick = sair;
-
-        // Adicionamos ao card
+        // Adiciona o botão Sair pequeno embaixo
         const card = document.querySelector('.auth-card');
-        card.appendChild(btnSalvar);
-        card.appendChild(btnSair);
+        const existeSair = document.getElementById('btn-sair-link');
+        
+        if (!existeSair) {
+            const btnSair = document.createElement('p');
+            btnSair.id = 'btn-sair-link';
+            btnSair.innerHTML = `<span style="cursor:pointer; color:#888; text-decoration:underline; font-size:14px;">Sair da conta</span>`;
+            btnSair.style.marginTop = '15px';
+            btnSair.onclick = sair;
+            card.appendChild(btnSair);
+        }
     }
+}
+
+// Atualize também a função sair para limpar o modo convidado
+function sair() {
+    localStorage.removeItem('usuarioLogado');
+    localStorage.removeItem('modoConvidado');
+    window.location.href = "login.html";
 }
 
 window.addEventListener('DOMContentLoaded', () => {
