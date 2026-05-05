@@ -26,27 +26,45 @@
                 <a href="#" class="forgot-password">Esqueceu a senha?</a>
             </div>
 
-            <button type="submit" class="btn-entrar">Entrar</button>
+            <div class="login-actions">
+                <button type="submit" class="btn-entrar">Entrar</button>
+                <button type="button" class="btn-guest" onclick="entrarComoConvidado()">Entrar como Convidado</button>
+            </div>
         </form>
 
         <p class="signup-text">Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
     </div>
 
     <script>
+        // Função para o login normal
         document.getElementById('formLogin').addEventListener('submit', function(event) {
             event.preventDefault(); 
             const nomeDigitado = document.getElementById('nome').value;
             const senhaDigitada = document.getElementById('senha').value;
 
-            // Substitua o trecho dentro do seu login.html por este:
             if (nomeDigitado === 'admin' && senhaDigitada === '12345678!') {
-                localStorage.setItem('usuarioLogado', 'true'); // Define como logado
-                alert('Login efetuado com sucesso! Bem-vindo, Admin.');
-                window.location.href = "index.html"; // Redireciona para a página principal
+                localStorage.setItem('usuarioLogado', 'true');
+                localStorage.setItem('tipoUsuario', 'admin');
+                window.location.href = "index.html";
             } else {
-                mensagemErro.style.display = 'block';
+                alert('Dados incorretos.');
             }
         });
+
+        // Função para entrar como convidado
+        function entrarComoConvidado() {
+            localStorage.setItem('usuarioLogado', 'true');
+            localStorage.setItem('tipoUsuario', 'convidado');
+            // Criamos dados vazios para não dar erro no script do perfil
+            localStorage.setItem('dadosUsuario', JSON.stringify({
+                nome: "Convidado",
+                telefone: "",
+                altura: "",
+                peso: "",
+                email: "visitante@coremotion.com"
+            }));
+            window.location.href = "index.html";
+        }
     </script>
 </body>
 </html>
